@@ -1,0 +1,9 @@
+name: LilyPadCompass
+main: com.sgtcaze.LilyPadCompass.LilyPadCompass
+version: 2.4
+author: sgtcaze
+description: LilyPadCompass
+
+commands:
+  compass:
+    description: Used to get the compass
