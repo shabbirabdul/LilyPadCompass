@@ -2,6 +2,7 @@ package com.sgtcaze.LilyPadCompass;
 
 import java.util.Arrays;
 import java.util.HashMap;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -51,7 +52,7 @@ public class LilyPadCompass extends JavaPlugin implements CommandExecutor,
 	private ItemStack makeItem(FileConfiguration fileConf) {
 		ItemStack item = new ItemStack(Material.COMPASS, 1);
 
-		Material mat = Material(this.config.getString("item.type"));
+		Material mat = Material.matchMaterial(this.config.getString("item.type"));
 		if (mat != null) {
 			item.setType(mat);
 		}
@@ -68,6 +69,7 @@ public class LilyPadCompass extends JavaPlugin implements CommandExecutor,
 		return item;
 	}
 
+	@SuppressWarnings("unused")
 	private Material Material(String string) {
 		return null;
 	}
@@ -81,7 +83,7 @@ public class LilyPadCompass extends JavaPlugin implements CommandExecutor,
 		for (String key : fileConf.getConfigurationSection("commands").getKeys(
 				false)) {
 			Material mat = Material.matchMaterial(key.toUpperCase());
-
+			
 			if (mat == null) {
 				getLogger().info(
 						"The item " + key + " is unkown and was skipped!");
@@ -109,14 +111,6 @@ public class LilyPadCompass extends JavaPlugin implements CommandExecutor,
 		}
 		return map;
 	}
-
-	//@EventHandler
-	//public void OpenInventory(InventoryClickEvent e) {
-////		Player player = (Player) e.getWhoClicked();
-	//	e.getInventory().getName().equals(compassInv.getName());{
-	//	e.setCancelled(true);
-	//}
-//	}
 
 	public boolean onCommand(CommandSender sender, Command cmd,
 			String commandLabel, String[] args) {

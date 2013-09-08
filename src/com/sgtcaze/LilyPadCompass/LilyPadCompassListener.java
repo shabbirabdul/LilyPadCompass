@@ -64,9 +64,11 @@ public class LilyPadCompassListener extends LilyPadCompass {
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
+		if(event.getItem().equals(this.plugin.compassItem)){
 		if ((event.getAction() == Action.RIGHT_CLICK_AIR) || (event
-						.getAction() == Action.RIGHT_CLICK_BLOCK) && (event.getItem().equals(this.plugin.compassItem))){
+						.getAction() == Action.RIGHT_CLICK_BLOCK)){
 			player.openInventory(this.plugin.compassInv);
 	        }
 		}
 	}
+}
