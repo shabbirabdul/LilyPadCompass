@@ -30,15 +30,13 @@ public class LilyPadCompassListener extends LilyPadCompass {
 	private void fireGUI(InventoryClickEvent event, HashMap<String, String> map) {
 		Player player = (Player) event.getWhoClicked();
 		if (event.getCurrentItem() == null) {
-			event.setCancelled(true);
 			return;
 		}
-		String item = event.getCurrentItem().getType().name();
+		String mat = event.getCurrentItem().getType().name();
 
-		if (map.containsKey(item)) {
-			String command = (String) map.get(item);
+		if (map.containsKey(mat)) {
+			String command = (String)map.get(mat);
 
-			event.setCancelled(true);
 			player.closeInventory();
 			player.performCommand(command);
 		}
@@ -64,11 +62,14 @@ public class LilyPadCompassListener extends LilyPadCompass {
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
-		if(event.getItem().equals(this.plugin.compassItem)){
-		if ((event.getAction() == Action.RIGHT_CLICK_AIR) || (event
-						.getAction() == Action.RIGHT_CLICK_BLOCK)){
-			player.openInventory(this.plugin.compassInv);
-	        }
+		if (event.getItem() == null) {
+			return;
+		}
+		if (event.getItem().equals(this.plugin.compassItem)) {
+			if ((event.getAction() == Action.RIGHT_CLICK_AIR)
+					|| (event.getAction() == Action.RIGHT_CLICK_BLOCK)) {
+				player.openInventory(this.plugin.compassInv);
+			}
 		}
 	}
 }

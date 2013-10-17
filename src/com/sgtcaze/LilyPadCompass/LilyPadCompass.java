@@ -3,6 +3,7 @@ package com.sgtcaze.LilyPadCompass;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -18,11 +19,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class LilyPadCompass extends JavaPlugin implements CommandExecutor,
 		Listener {
+	
+	
 	public Inventory compassInv;
 	public ItemStack compassItem;
 	public HashMap<String, String> itemsAndCommands;
 	public FileConfiguration config;
 	public FileConfiguration admin;
+	
+	public Inventory inv;
 
 	public void onEnable() {
 		this.config = getConfig();
@@ -32,8 +37,9 @@ public class LilyPadCompass extends JavaPlugin implements CommandExecutor,
 		getServer().getPluginManager().registerEvents(
 				new LilyPadCompassListener(this), this);
 
+		this.createInventory = makeInventory(this.createInventory(Inventory inventory));
 		this.compassInv = makeInventory(this.config);
-		this.compassItem = makeItem(this.config);
+    	this.compassItem = makeItem(this.config);
 		this.itemsAndCommands = makeCommandList(this.config, this.compassInv);
 	}
 
@@ -52,28 +58,40 @@ public class LilyPadCompass extends JavaPlugin implements CommandExecutor,
 	private ItemStack makeItem(FileConfiguration fileConf) {
 		ItemStack item = new ItemStack(Material.COMPASS, 1);
 
-		Material mat = Material.matchMaterial(this.config.getString("item.type"));
-		if (mat != null) {
-			item.setType(mat);
-		}
-
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(ChatColor.translateAlternateColorCodes('&',
 				fileConf.getString("item.title")));
 		if (this.getConfig().getString("AllowCompassLore")
 				.equalsIgnoreCase("true")) {
-		meta.setLore(Arrays.asList(ChatColor.translateAlternateColorCodes('&',
-				fileConf.getString("item.lore"))));
+			meta.setLore(Arrays.asList(ChatColor.translateAlternateColorCodes(
+					'&', fileConf.getString("item.lore"))));
 		}
 		item.setItemMeta(meta);
 		return item;
 	}
+	
 
-	@SuppressWarnings("unused")
-	private Material Material(String string) {
-		return null;
+	public int getID(String id) {
+		return Integer.parseInt(id.split(":")[0]);
 	}
 
+	public short getDamage(String id) {
+		String[] split = id.split(":");
+		if (split.length >= 2) {
+			return Short.parseShort(split[1]);
+		}
+		return 0;
+	}
+
+	public void createInventory(Inventory inventory){
+	int slots = this.config.getInt("slots");
+    int ID = getID(this.config.getString("commands.id"));
+	short damage = getDamage(this.config.getString("damage"));
+	String Name = this.config.getString("Name").replaceAll("&", "§");
+    
+    ItemStack item = new ItemStack(ID, 1, damage);
+	}
+	
 	@SuppressWarnings("unchecked")
 	private HashMap<String, String> makeCommandList(FileConfiguration fileConf,
 			Inventory inv) {
@@ -82,25 +100,28 @@ public class LilyPadCompass extends JavaPlugin implements CommandExecutor,
 
 		for (String key : fileConf.getConfigurationSection("commands").getKeys(
 				false)) {
-			Material mat = Material.matchMaterial(key.toUpperCase());
-			
-			if (mat == null) {
-				getLogger().info(
-						"The item " + key + " is unkown and was skipped!");
-			} else {
-				map.put(mat.name(),
-						fileConf.getString("commands." + key + ".command"));
 
-				ItemStack item = new ItemStack(mat, 1);
+			String mat = key;
+			int ID = getID(mat);
+			short Damage = getDamage(mat);
+
+			if (mat == null) {
+				// Do nothing at all :D
+			} else {
+				map.put(mat, fileConf.getString("commands." + key + ".command"));
+
+				ItemStack item = new ItemStack(ID, 1, Damage);
 
 				ItemMeta meta = item.getItemMeta();
 				meta.setDisplayName(ChatColor.translateAlternateColorCodes('&',
 						fileConf.getString("commands." + key + ".title")));
 				if (this.getConfig().getString("AllowItemLore")
 						.equalsIgnoreCase("true")) {
-				meta.setLore(Arrays.asList(ChatColor
-						.translateAlternateColorCodes('&',
-								fileConf.getString("commands." + key + ".lore"))));
+					meta.setLore(Arrays.asList(ChatColor
+							.translateAlternateColorCodes(
+									'&',
+									fileConf.getString("commands." + key
+											+ ".lore"))));
 				}
 
 				item.setItemMeta(meta);
