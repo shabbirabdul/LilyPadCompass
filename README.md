@@ -5,4 +5,4 @@ LilyPadCompass allows you to configure a compass where you can click items to ac
 
 LilyPad: http://www.lilypadmc.org/resources/lilypadcompass.6/
 
-Dev Builds: http://ci.playmc.cc/jobs/LilyPadCompass
+Dev Builds: http://ci.playmc.cc/job/LilyPadCompass
