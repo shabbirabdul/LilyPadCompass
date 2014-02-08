@@ -1,8 +1,10 @@
 package com.sgtcaze.LilyPadCompass;
 
 import java.util.HashMap;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -10,7 +12,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class LilyPadCompassListener extends LilyPadCompass {
+public class LilyPadCompassListener implements Listener {
 
 	private LilyPadCompass plugin;
 

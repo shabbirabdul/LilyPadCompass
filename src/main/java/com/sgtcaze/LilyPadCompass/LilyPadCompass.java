@@ -29,7 +29,6 @@ public class LilyPadCompass extends JavaPlugin implements CommandExecutor,
 		this.config = getConfig();
 		saveDefaultConfig();
 
-		getServer().getPluginManager().registerEvents(this, this);
 		getServer().getPluginManager().registerEvents(
 				new LilyPadCompassListener(this), this);
 
