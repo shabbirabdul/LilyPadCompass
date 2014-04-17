@@ -78,6 +78,10 @@ public class LilyPadCompass extends JavaPlugin implements Listener {
 		String Name = config.getString("Compass.Name").replaceAll("&", "§");
 		String Lore = config.getString("Compass.Lore").replaceAll("&", "§");
 
+		String striped = ChatColor.stripColor(Name);
+
+		magic.put(striped, "na");
+
 		compassItem = createItem(mat, 1, sht, Name, Lore);
 	}
 

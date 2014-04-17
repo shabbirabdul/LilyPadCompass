@@ -31,7 +31,7 @@ public class InventoryClick implements Listener {
 						if (!command.equalsIgnoreCase("na")) {
 							p.performCommand(command);
 						}
-						
+
 						p.closeInventory();
 					}
 				}
