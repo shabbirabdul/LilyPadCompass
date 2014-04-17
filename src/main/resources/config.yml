@@ -1,30 +1,18 @@
-################################
-#  LilyPadCompass by sgtcaze   #
-#  based off of CompassCommand #
-#       by xGhOsTkiLLeRx       #
-################################
-#
-# Quick information: (Config Version: 3.2)
-#
-# When you FIRST load the plugin, the compass will appear empty. Simply fill it out, and then reload, and from then on it'll work fine.
-# Item names and IDs can be in quotations or not. For item names, use caps. Example: ANVIL
-# If "AllowCompassLore" is set to "false", then there will be NO description on the compass
-# If "AllowItemLore" is set to "false", there there will be NO description on the items in the compass
-# Source code can be found at: github.com/sgtcaze/LilyPadCompass
-# Support can be found at: sgtcaze.com
-
-AllowCompassLore: true
-AllowItemLore: true
-
-global:
-  slots: 9
-  invTitle: '&0Server Selector'
-item:
-  type: COMPASS
-  title: '&aTeleporter'
-  lore: '&2Right click to open!'
-commands:
-  TNT:
-    command: gamemode 1
-    title: '&4C&cr&6e&ea&at&2i&bv&3e'
-    lore: '&bCustom &aColors &eSupported&d!'
+Compass:
+    Material: COMPASS
+    Short: 0
+    Name: "&bTeleporter"
+    Lore: "&fSo many custom"
+    JoinSlot: 4
+Inventory:
+   Slots: 9
+   Name: "&0My Custom Inventory"
+Items:
+ '1':
+    Material: WOOL
+    Slot: 4
+    Amount: 1
+    Short: 5
+    Name: "&a&lMagic Wool"
+    Lore: "&7&oSo much magic..."
+    Command: pl
