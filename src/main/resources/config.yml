@@ -4,6 +4,7 @@ Compass:
     Name: "&bTeleporter"
     Lore: "&fSo many custom"
     JoinSlot: 4
+    DropsDisabled: false
 Inventory:
    Slots: 9
    Name: "&0My Custom Inventory"

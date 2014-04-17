@@ -15,6 +15,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import cc.playmc.lilypadcompass.events.InventoryClick;
+import cc.playmc.lilypadcompass.events.PlayerDropItem;
 import cc.playmc.lilypadcompass.events.PlayerInteract;
 import cc.playmc.lilypadcompass.events.PlayerJoin;
 
@@ -26,6 +27,8 @@ public class LilyPadCompass extends JavaPlugin implements Listener {
 
 	public static ItemStack compassItem;
 
+	public static Boolean dropsDisabled;
+
 	public static Inventory compass;
 
 	public static HashMap<String, String> magic = new HashMap<>();
@@ -35,6 +38,7 @@ public class LilyPadCompass extends JavaPlugin implements Listener {
 	public void onEnable() {
 		PluginManager pm = Bukkit.getServer().getPluginManager();
 		pm.registerEvents(new InventoryClick(), this);
+		pm.registerEvents(new PlayerDropItem(), this);
 		pm.registerEvents(new PlayerInteract(), this);
 		pm.registerEvents(new PlayerJoin(), this);
 
@@ -46,6 +50,8 @@ public class LilyPadCompass extends JavaPlugin implements Listener {
 
 		slotsSize = config.getInt("Inventory.Slots");
 		compassSlot = config.getInt("Compass.JoinSlot");
+
+		dropsDisabled = config.getBoolean("Compass.DropsDisabled");
 
 		createCompassItem();
 		createInventory();
