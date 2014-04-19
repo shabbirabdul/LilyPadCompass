@@ -57,10 +57,6 @@ public class LilyPadCompass extends JavaPlugin implements Listener {
 		createInventory();
 	}
 
-	public void onDisable() {
-		saveConfig();
-	}
-
 	public static ItemStack createItem(Material material, int amount,
 			short shrt, String displayname, String lore) {
 		ItemStack item = new ItemStack(material, amount, (short) shrt);
