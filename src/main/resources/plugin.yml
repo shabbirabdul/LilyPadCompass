@@ -1,4 +1,7 @@
 name: LilyPadCompass
 author: sgtcaze
-version: 4.0.3
+version: 4.0.4
 main: cc.playmc.lilypadcompass.LilyPadCompass
+commands:
+  compass:
+    description: Gives you an updated LilyPadCompass

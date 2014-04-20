@@ -26,7 +26,11 @@ public class InventoryClick implements Listener {
 						String name = item.getItemMeta().getDisplayName();
 						String striped = ChatColor.stripColor(name);
 
-						String command = LilyPadCompass.magic.get(striped);
+						String command = LilyPadCompass.commands.get(striped);
+
+						if (LilyPadCompass.message.get(striped) != null) {
+							p.sendMessage(LilyPadCompass.message.get(striped));
+						}
 
 						if (!command.equalsIgnoreCase("na")) {
 							p.performCommand(command);

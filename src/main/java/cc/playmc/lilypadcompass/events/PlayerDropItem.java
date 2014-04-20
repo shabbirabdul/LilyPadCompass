@@ -12,7 +12,7 @@ public class PlayerDropItem implements Listener {
 	public void onItemDrop(PlayerDropItemEvent event) {
 		if (event.getItemDrop().getItemStack()
 				.equals(LilyPadCompass.compassItem)
-				&& LilyPadCompass.dropsDisabled) {
+				&& !LilyPadCompass.allowDrop) {
 			event.setCancelled(true);
 		}
 	}

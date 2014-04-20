@@ -2,18 +2,31 @@ Compass:
     Material: COMPASS
     Short: 0
     Name: "&bTeleporter"
-    Lore: "&fSo many custom"
+    Lore: 
+    - "&fCustomize your lore!"
+    - "&fWith a &62nd &fline! ;o"
     JoinSlot: 4
-    DropsDisabled: false
+    AllowDrop: false
 Inventory:
    Slots: 9
    Name: "&0My Custom Inventory"
 Items:
  '1':
     Material: WOOL
-    Slot: 4
+    Slot: 0
     Amount: 1
     Short: 5
-    Name: "&a&lMagic Wool"
-    Lore: "&7&oSo much magic..."
+    Name: "&aGreen Wool"
+    Lore: 
+    - "&fLore line 1"
+    - "&cLore line 2"
+    - "&bLore line 3"
+    Message: "&cYou clicked on the green wool!"
     Command: pl
+ '2':
+    Material: BREAD
+    Slot: 2
+    Amount: 1
+    Short: 5
+    Name: "&cMagic Bread - No lore"
+    Command: help
