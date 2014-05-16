@@ -1,6 +1,6 @@
 name: LilyPadCompass
 author: sgtcaze
-version: 4.0.4
+version: 4.0.5
 main: cc.playmc.lilypadcompass.LilyPadCompass
 commands:
   compass:
