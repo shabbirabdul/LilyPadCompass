@@ -10,6 +10,12 @@ import cc.playmc.lilypadcompass.LilyPadCompass;
 
 public class PlayerInteract implements Listener {
 
+	private LilyPadCompass plugin;
+
+	public PlayerInteract(LilyPadCompass plugin) {
+		this.plugin = plugin;
+	}
+
 	@EventHandler
 	public void onInteract(PlayerInteractEvent e) {
 
@@ -22,9 +28,9 @@ public class PlayerInteract implements Listener {
 					if (item.getItemMeta()
 							.getDisplayName()
 							.equalsIgnoreCase(
-									LilyPadCompass.compassItem.getItemMeta()
+									plugin.compassItem.getItemMeta()
 											.getDisplayName())) {
-						e.getPlayer().openInventory(LilyPadCompass.compass);
+						e.getPlayer().openInventory(plugin.compass);
 					}
 				}
 			}

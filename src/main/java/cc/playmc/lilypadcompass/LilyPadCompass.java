@@ -23,28 +23,28 @@ import cc.playmc.lilypadcompass.events.PlayerJoin;
 
 public class LilyPadCompass extends JavaPlugin implements Listener {
 
-	public static FileConfiguration config;
+	public FileConfiguration config;
 
-	public static LilyPadCompass plugin;
+	public LilyPadCompass plugin;
 
-	public static ItemStack compassItem;
+	public ItemStack compassItem;
 
-	public static Boolean allowDrop;
+	public Boolean allowDrop;
 
-	public static Inventory compass;
+	public Inventory compass;
 
-	public static HashMap<String, String> commands = new HashMap<>();
-	public static HashMap<String, String> message = new HashMap<>();
+	public HashMap<String, String> commands = new HashMap<>();
+	public HashMap<String, String> message = new HashMap<>();
 
-	public static int slotsSize, compassSlot;
+	public int slotsSize, compassSlot;
 
 	public void onEnable() {
 
 		PluginManager pm = Bukkit.getServer().getPluginManager();
-		pm.registerEvents(new InventoryClick(), this);
-		pm.registerEvents(new PlayerDropItem(), this);
-		pm.registerEvents(new PlayerInteract(), this);
-		pm.registerEvents(new PlayerJoin(), this);
+		pm.registerEvents(new InventoryClick(this), this);
+		pm.registerEvents(new PlayerDropItem(this), this);
+		pm.registerEvents(new PlayerInteract(this), this);
+		pm.registerEvents(new PlayerJoin(this), this);
 
 		plugin = this;
 
@@ -52,7 +52,7 @@ public class LilyPadCompass extends JavaPlugin implements Listener {
 
 		config = getConfig();
 
-		getCommand("compass").setExecutor(new Compass());
+		getCommand("compass").setExecutor(new Compass(this));
 
 		slotsSize = config.getInt("Inventory.Slots");
 		compassSlot = config.getInt("Compass.JoinSlot");
@@ -63,8 +63,8 @@ public class LilyPadCompass extends JavaPlugin implements Listener {
 		createInventory();
 	}
 
-	public static ItemStack createItem(Material material, int amount,
-			short shrt, String displayname, List<String> Lore) {
+	public ItemStack createItem(Material material, int amount, short shrt,
+			String displayname, List<String> Lore) {
 		ItemStack item = new ItemStack(material, amount, (short) shrt);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(displayname);
@@ -74,8 +74,8 @@ public class LilyPadCompass extends JavaPlugin implements Listener {
 		return item;
 	}
 
-	public static ItemStack createItem(Material material, int amount,
-			short shrt, String displayname) {
+	public ItemStack createItem(Material material, int amount, short shrt,
+			String displayname) {
 		ItemStack item = new ItemStack(material, amount, (short) shrt);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(displayname);
@@ -84,7 +84,7 @@ public class LilyPadCompass extends JavaPlugin implements Listener {
 		return item;
 	}
 
-	public static void createCompassItem() {
+	public void createCompassItem() {
 
 		Material mat = Material.matchMaterial(config.getString(
 				"Compass.Material").toUpperCase());
@@ -115,7 +115,7 @@ public class LilyPadCompass extends JavaPlugin implements Listener {
 		}
 	}
 
-	public static void createInventory() {
+	public void createInventory() {
 
 		compass = Bukkit.createInventory(null, slotsSize,
 				config.getString("Inventory.Name").replaceAll("&", "§"));

@@ -8,11 +8,16 @@ import cc.playmc.lilypadcompass.LilyPadCompass;
 
 public class PlayerDropItem implements Listener {
 
+	private LilyPadCompass plugin;
+
+	public PlayerDropItem(LilyPadCompass plugin) {
+		this.plugin = plugin;
+	}
+
 	@EventHandler
 	public void onItemDrop(PlayerDropItemEvent event) {
-		if (event.getItemDrop().getItemStack()
-				.equals(LilyPadCompass.compassItem)
-				&& !LilyPadCompass.allowDrop) {
+		if (event.getItemDrop().getItemStack().equals(plugin.compassItem)
+				&& !plugin.allowDrop) {
 			event.setCancelled(true);
 		}
 	}

@@ -11,6 +11,12 @@ import cc.playmc.lilypadcompass.LilyPadCompass;
 
 public class InventoryClick implements Listener {
 
+	private LilyPadCompass plugin;
+
+	public InventoryClick(LilyPadCompass plugin) {
+		this.plugin = plugin;
+	}
+
 	@EventHandler
 	public void onClick(InventoryClickEvent e) {
 
@@ -18,7 +24,7 @@ public class InventoryClick implements Listener {
 
 		Player p = (Player) e.getWhoClicked();
 
-		if (e.getInventory().getName().equals(LilyPadCompass.compass.getName())) {
+		if (e.getInventory().getName().equals(plugin.compass.getName())) {
 			e.setCancelled(true);
 			if (e.getCurrentItem() != null) {
 				if (item.getItemMeta() != null) {
@@ -26,10 +32,10 @@ public class InventoryClick implements Listener {
 						String name = item.getItemMeta().getDisplayName();
 						String striped = ChatColor.stripColor(name);
 
-						String command = LilyPadCompass.commands.get(striped);
+						String command = plugin.commands.get(striped);
 
-						if (LilyPadCompass.message.get(striped) != null) {
-							p.sendMessage(LilyPadCompass.message.get(striped));
+						if (plugin.message.get(striped) != null) {
+							p.sendMessage(plugin.message.get(striped));
 						}
 
 						if (!command.equalsIgnoreCase("na")) {

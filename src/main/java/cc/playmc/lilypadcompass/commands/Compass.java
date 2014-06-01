@@ -9,6 +9,12 @@ import cc.playmc.lilypadcompass.LilyPadCompass;
 
 public class Compass implements CommandExecutor {
 
+	private LilyPadCompass plugin;
+
+	public Compass(LilyPadCompass plugin) {
+		this.plugin = plugin;
+	}
+
 	public boolean onCommand(CommandSender sender, Command cmd, String label,
 			String[] a) {
 
@@ -19,9 +25,9 @@ public class Compass implements CommandExecutor {
 
 		if (sender instanceof Player) {
 			Player p = (Player) sender;
-			LilyPadCompass.createCompassItem();
-			LilyPadCompass.createInventory();
-			p.getInventory().addItem(LilyPadCompass.compassItem);
+			plugin.createCompassItem();
+			plugin.createInventory();
+			p.getInventory().addItem(plugin.compassItem);
 			return true;
 		}
 		return false;
