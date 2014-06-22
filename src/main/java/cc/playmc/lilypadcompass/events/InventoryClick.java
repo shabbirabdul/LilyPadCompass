@@ -43,6 +43,11 @@ public class InventoryClick implements Listener {
 						}
 
 						p.closeInventory();
+
+						if (plugin.server.get(striped) != null) {
+							plugin.getLilyUtils().redirect(
+									plugin.server.get(striped), p);
+						}
 					}
 				}
 			}

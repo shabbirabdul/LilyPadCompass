@@ -20,14 +20,15 @@ import cc.playmc.lilypadcompass.events.InventoryClick;
 import cc.playmc.lilypadcompass.events.PlayerDropItem;
 import cc.playmc.lilypadcompass.events.PlayerInteract;
 import cc.playmc.lilypadcompass.events.PlayerJoin;
+import cc.playmc.lilypadcompass.utils.LilyPad;
 
 public class LilyPadCompass extends JavaPlugin implements Listener {
 
 	public FileConfiguration config;
 
-	public LilyPadCompass plugin;
-
 	public ItemStack compassItem;
+
+	private LilyPad lilyPad;
 
 	public Boolean allowDrop;
 
@@ -35,6 +36,7 @@ public class LilyPadCompass extends JavaPlugin implements Listener {
 
 	public HashMap<String, String> commands = new HashMap<>();
 	public HashMap<String, String> message = new HashMap<>();
+	public HashMap<String, String> server = new HashMap<>();
 
 	public int slotsSize, compassSlot;
 
@@ -45,8 +47,6 @@ public class LilyPadCompass extends JavaPlugin implements Listener {
 		pm.registerEvents(new PlayerDropItem(this), this);
 		pm.registerEvents(new PlayerInteract(this), this);
 		pm.registerEvents(new PlayerJoin(this), this);
-
-		plugin = this;
 
 		saveDefaultConfig();
 
@@ -59,27 +59,33 @@ public class LilyPadCompass extends JavaPlugin implements Listener {
 
 		allowDrop = config.getBoolean("Compass.DropsDisabled");
 
+		if (config.getBoolean("LilyPadEnabled")) {
+			lilyPad = new LilyPad();
+			lilyPad.registerConnect();
+		}
+
 		createCompassItem();
 		createInventory();
 	}
 
-	public ItemStack createItem(Material material, int amount, short shrt,
-			String displayname, List<String> Lore) {
-		ItemStack item = new ItemStack(material, amount, (short) shrt);
-		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(displayname);
-		meta.setLore(Lore);
+	public LilyPad getLilyUtils() {
+		return lilyPad;
+	}
 
+	public ItemStack createItem(Material m, int a, int s, String dn,
+			List<String> l) {
+		ItemStack item = new ItemStack(m, a, (short) s);
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName(dn);
+		meta.setLore(l);
 		item.setItemMeta(meta);
 		return item;
 	}
 
-	public ItemStack createItem(Material material, int amount, short shrt,
-			String displayname) {
-		ItemStack item = new ItemStack(material, amount, (short) shrt);
+	public ItemStack createItem(Material m, int a, int s, String dn) {
+		ItemStack item = new ItemStack(m, a, (short) s);
 		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(displayname);
-
+		meta.setDisplayName(dn);
 		item.setItemMeta(meta);
 		return item;
 	}
@@ -161,6 +167,11 @@ public class LilyPadCompass extends JavaPlugin implements Listener {
 
 				String striped = ChatColor.stripColor(Name);
 				commands.put(striped, command);
+
+				if (config.getString("Items." + i + ".LilyPad") != null) {
+					server.put(striped,
+							config.getString("Items." + i + ".LilyPad"));
+				}
 
 				if (config.getString("Items." + i + ".Message") != null) {
 					message.put(striped,
