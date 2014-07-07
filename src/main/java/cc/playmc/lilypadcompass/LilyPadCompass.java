@@ -72,8 +72,7 @@ public class LilyPadCompass extends JavaPlugin implements Listener {
 		return lilyPad;
 	}
 
-	public ItemStack createItem(Material m, int a, int s, String dn,
-			List<String> l) {
+	public ItemStack make(Material m, int a, int s, String dn, List<String> l) {
 		ItemStack item = new ItemStack(m, a, (short) s);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(dn);
@@ -82,7 +81,7 @@ public class LilyPadCompass extends JavaPlugin implements Listener {
 		return item;
 	}
 
-	public ItemStack createItem(Material m, int a, int s, String dn) {
+	public ItemStack make(Material m, int a, int s, String dn) {
 		ItemStack item = new ItemStack(m, a, (short) s);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(dn);
@@ -115,9 +114,9 @@ public class LilyPadCompass extends JavaPlugin implements Listener {
 		commands.put(striped, "na");
 
 		if (hasLore) {
-			compassItem = createItem(mat, 1, sht, Name, lore);
+			compassItem = make(mat, 1, sht, Name, lore);
 		} else {
-			compassItem = createItem(mat, 1, sht, Name);
+			compassItem = make(mat, 1, sht, Name);
 		}
 	}
 
@@ -126,58 +125,52 @@ public class LilyPadCompass extends JavaPlugin implements Listener {
 		compass = Bukkit.createInventory(null, slotsSize,
 				config.getString("Inventory.Name").replaceAll("&", "§"));
 
-		for (int i = 0; i < slotsSize; i++) {
-			if (config.getString("Items." + i + ".Material") != null) {
+		for (String i : config.getConfigurationSection("Items").getKeys(false)) {
+			List<String> Lore = new ArrayList<>();
+			boolean hasLore = false;
 
-				List<String> Lore = new ArrayList<>();
-				Boolean hasLore = false;
+			int slot = config.getInt("Items." + i + ".Slot");
+			Material mat = Material.matchMaterial(config.getString(
+					"Items." + i + ".Material").toUpperCase());
 
-				int slot = config.getInt("Items." + i + ".Slot");
-				Material mat = Material.matchMaterial(config.getString(
-						"Items." + i + ".Material").toUpperCase());
+			int Amount = config.getInt("Items." + i + ".Amount");
 
-				int Amount = config.getInt("Items." + i + ".Amount");
+			short sht = Short
+					.valueOf(config.getString("Items." + i + ".Short"));
 
-				short sht = Short.valueOf(config.getString("Items." + i
-						+ ".Short"));
+			String Name = config.getString("Items." + i + ".Name").replaceAll(
+					"&", "§");
 
-				String Name = config.getString("Items." + i + ".Name")
-						.replaceAll("&", "§");
+			if (config.getString("Items." + i + ".Lore") != null) {
+				hasLore = true;
 
-				if (config.getString("Items." + i + ".Lore") != null) {
-					hasLore = true;
-
-					for (String s : config
-							.getStringList("Items." + i + ".Lore")) {
-						Lore.add(s.replaceAll("&", "§"));
-					}
+				for (String s : config.getStringList("Items." + i + ".Lore")) {
+					Lore.add(s.replaceAll("&", "§"));
 				}
+			}
 
-				String command = config.getString("Items." + i + ".Command");
+			String command = config.getString("Items." + i + ".Command");
 
-				if (hasLore) {
-					compass.setItem(
-							slot,
-							new ItemStack(createItem(mat, Amount, sht, Name,
-									Lore)));
-				} else {
-					compass.setItem(slot,
-							new ItemStack(createItem(mat, Amount, sht, Name)));
-				}
+			if (hasLore) {
+				compass.setItem(slot,
+						new ItemStack(make(mat, Amount, sht, Name, Lore)));
+			} else {
+				compass.setItem(slot, new ItemStack(
+						make(mat, Amount, sht, Name)));
+			}
 
-				String striped = ChatColor.stripColor(Name);
-				commands.put(striped, command);
+			String striped = ChatColor.stripColor(Name);
+			commands.put(striped, command);
 
-				if (config.getString("Items." + i + ".LilyPad") != null) {
-					server.put(striped,
-							config.getString("Items." + i + ".LilyPad"));
-				}
+			if (config.getString("Items." + i + ".LilyPad") != null) {
+				server.put(striped, config.getString("Items." + i + ".LilyPad"));
+			}
 
-				if (config.getString("Items." + i + ".Message") != null) {
-					message.put(striped,
-							config.getString("Items." + i + ".Message")
-									.replaceAll("&", "§"));
-				}
+			if (config.getString("Items." + i + ".Message") != null) {
+				message.put(
+						striped,
+						config.getString("Items." + i + ".Message").replaceAll(
+								"&", "§"));
 			}
 		}
 	}
