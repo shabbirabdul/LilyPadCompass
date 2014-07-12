@@ -17,7 +17,7 @@
 	
 	<distributionManagement>
          <repository>
-             <id>playmc-repo</id>
+             <id>playmc</id>
              <url>http://ci.playmc.cc/plugin/repository/everything/</url>
          </repository>
      </distributionManagement>
@@ -67,6 +67,10 @@
 		<repository>
             <id>lilypad</id>
             <url>http://ci.lilypadmc.org/plugin/repository/everything</url>
+        </repository>
+		<repository>
+            <id>playmc</id>
+            <url>http://ci.playmc.cc/plugin/repository/everything/</url>
         </repository>
     </repositories>
 </project>
