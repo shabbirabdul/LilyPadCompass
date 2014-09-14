@@ -38,7 +38,7 @@ public class InventoryClick implements Listener {
 							p.sendMessage(plugin.message.get(striped));
 						}
 
-						if (!command.equalsIgnoreCase("na")) {
+						if (command != null && !command.equalsIgnoreCase("na")) {
 							p.performCommand(command);
 						}
 
