@@ -11,46 +11,47 @@ import cc.playmc.lilypadcompass.LilyPadCompass;
 
 public class InventoryClick implements Listener {
 
-	private LilyPadCompass plugin;
+    private LilyPadCompass plugin = LilyPadCompass.getInstance();
 
-	public InventoryClick(LilyPadCompass plugin) {
-		this.plugin = plugin;
-	}
+    @EventHandler
+    public void onClick(InventoryClickEvent e) {
+        if (e.getInventory().getName().equals(plugin.getCompassInventory().getName())) {
+            e.setCancelled(true);
 
-	@EventHandler
-	public void onClick(InventoryClickEvent e) {
+            ItemStack item = e.getCurrentItem();
 
-		ItemStack item = e.getCurrentItem();
+            if (item == null) {
+                return;
+            }
 
-		Player p = (Player) e.getWhoClicked();
+            if (item.getItemMeta() == null) {
+                return;
+            }
 
-		if (e.getInventory().getName().equals(plugin.compass.getName())) {
-			e.setCancelled(true);
-			if (e.getCurrentItem() != null) {
-				if (item.getItemMeta() != null) {
-					if (item.getItemMeta().getDisplayName() != null) {
-						String name = item.getItemMeta().getDisplayName();
-						String striped = ChatColor.stripColor(name);
+            if (item.getItemMeta().getDisplayName() == null) {
+                return;
+            }
 
-						String command = plugin.commands.get(striped);
+            Player p = (Player) e.getWhoClicked();
 
-						if (plugin.message.get(striped) != null) {
-							p.sendMessage(plugin.message.get(striped));
-						}
+            String name = item.getItemMeta().getDisplayName();
+            String striped = ChatColor.stripColor(name);
 
-						if (command != null && !command.equalsIgnoreCase("na")) {
-							p.performCommand(command);
-						}
+            String command = plugin.getCommandsMap().get(striped);
 
-						p.closeInventory();
+            if (plugin.getMessagesMap().get(striped) != null) {
+                p.sendMessage(plugin.getMessagesMap().get(striped));
+            }
 
-						if (plugin.server.get(striped) != null) {
-							plugin.getLilyUtils().redirect(
-									plugin.server.get(striped), p);
-						}
-					}
-				}
-			}
-		}
-	}
+            if (command != null && !command.equalsIgnoreCase("na")) {
+                p.performCommand(command);
+            }
+
+            p.closeInventory();
+
+            if (plugin.getServerMap().get(striped) != null) {
+                plugin.getLilyUtils().redirect(plugin.getServerMap().get(striped), p);
+            }
+        }
+    }
 }

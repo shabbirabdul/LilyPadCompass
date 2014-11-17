@@ -2,6 +2,7 @@ name: LilyPadCompass
 author: sgtcaze
 version: 4.0.8
 main: cc.playmc.lilypadcompass.LilyPadCompass
+softdepend: [LilyPad-Connect]
 commands:
   compass:
     description: Gives you an updated LilyPadCompass

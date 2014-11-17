@@ -15,52 +15,40 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import cc.playmc.lilypadcompass.commands.Compass;
 import cc.playmc.lilypadcompass.events.InventoryClick;
 import cc.playmc.lilypadcompass.events.PlayerDropItem;
 import cc.playmc.lilypadcompass.events.PlayerInteract;
 import cc.playmc.lilypadcompass.events.PlayerJoin;
-import cc.playmc.lilypadcompass.utils.LilyPad;
 
 public class LilyPadCompass extends JavaPlugin implements Listener {
 
-	public FileConfiguration config;
+    private static LilyPadCompass plugin;
+    
+    private LilyPadHook lilyPad;
+    
+	private ItemStack compassItem;
 
-	public ItemStack compassItem;
+	private Inventory compassInventory;
 
-	private LilyPad lilyPad;
-
-	public Boolean allowDrop;
-
-	public Inventory compass;
-
-	public HashMap<String, String> commands = new HashMap<>();
-	public HashMap<String, String> message = new HashMap<>();
-	public HashMap<String, String> server = new HashMap<>();
-
-	public int slotsSize, compassSlot;
+	private HashMap<String, String> commands = new HashMap<>();
+	private HashMap<String, String> message = new HashMap<>();
+	private HashMap<String, String> server = new HashMap<>();
 
 	public void onEnable() {
-
+        plugin = this;
+     
 		PluginManager pm = Bukkit.getServer().getPluginManager();
-		pm.registerEvents(new InventoryClick(this), this);
-		pm.registerEvents(new PlayerDropItem(this), this);
-		pm.registerEvents(new PlayerInteract(this), this);
-		pm.registerEvents(new PlayerJoin(this), this);
+		pm.registerEvents(new InventoryClick(), this);
+		pm.registerEvents(new PlayerDropItem(), this);
+		pm.registerEvents(new PlayerInteract(), this);
+		pm.registerEvents(new PlayerJoin(), this);
+		
+		getCommand("compass").setExecutor(new LilyPadCompassCommand());
 
 		saveDefaultConfig();
-
-		config = getConfig();
-
-		getCommand("compass").setExecutor(new Compass(this));
-
-		slotsSize = config.getInt("Inventory.Slots");
-		compassSlot = config.getInt("Compass.JoinSlot");
-
-		allowDrop = config.getBoolean("Compass.DropsDisabled");
-
-		if (config.getBoolean("LilyPadEnabled")) {
-			lilyPad = new LilyPad();
+		
+		if (getConfig().getBoolean("LilyPadEnabled")) {
+			lilyPad = new LilyPadHook();
 			lilyPad.registerConnect();
 		}
 
@@ -68,11 +56,39 @@ public class LilyPadCompass extends JavaPlugin implements Listener {
 		createInventory();
 	}
 
-	public LilyPad getLilyUtils() {
+	public static LilyPadCompass getInstance() {
+	    return plugin;
+	}
+	
+	public LilyPadHook getLilyUtils() {
 		return lilyPad;
 	}
+	
+	public ItemStack getCompassItem() {
+	    return compassItem;
+	}
+	
+	public Inventory getCompassInventory() {
+	    return compassInventory;
+	}
+	
+	public HashMap<String, String> getCommandsMap() {
+	    return commands;
+	}
+	
+	public HashMap<String, String> getMessagesMap() {
+	    return message;
+	}
+	
+	public HashMap<String, String> getServerMap() {
+	    return server;
+	}
+	
+	private String colorize(String input) {
+	    return ChatColor.translateAlternateColorCodes('&', input);
+	}
 
-	public ItemStack make(Material m, int a, int s, String dn, List<String> l) {
+	private ItemStack make(Material m, int a, int s, String dn, List<String> l) {
 		ItemStack item = new ItemStack(m, a, (short) s);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(dn);
@@ -81,7 +97,7 @@ public class LilyPadCompass extends JavaPlugin implements Listener {
 		return item;
 	}
 
-	public ItemStack make(Material m, int a, int s, String dn) {
+	private ItemStack make(Material m, int a, int s, String dn) {
 		ItemStack item = new ItemStack(m, a, (short) s);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(dn);
@@ -90,76 +106,69 @@ public class LilyPadCompass extends JavaPlugin implements Listener {
 	}
 
 	public void createCompassItem() {
+	    FileConfiguration config = getConfig();
+		Material mat = Material.matchMaterial(config.getString("Compass.Material").toUpperCase());
 
-		Material mat = Material.matchMaterial(config.getString(
-				"Compass.Material").toUpperCase());
-
-		short sht = Short.valueOf(config.getString("Compass.Short"));
+		short sht = (short) config.getInt("Compass.Short");
 
 		List<String> lore = new ArrayList<>();
-		Boolean hasLore = false;
+		boolean hasLore = false;
 
-		String Name = config.getString("Compass.Name").replaceAll("&", "§");
+		String name = colorize(config.getString("Compass.Name"));
 
 		if (config.getString("Compass.Lore") != null) {
 			hasLore = true;
 
 			for (String s : config.getStringList("Compass.Lore")) {
-				lore.add(s.replaceAll("&", "§"));
+				lore.add(colorize(s));
 			}
 		}
 
-		String striped = ChatColor.stripColor(Name);
+		String striped = ChatColor.stripColor(name);
 
 		commands.put(striped, "na");
 
 		if (hasLore) {
-			compassItem = make(mat, 1, sht, Name, lore);
+			compassItem = make(mat, 1, sht, name, lore);
 		} else {
-			compassItem = make(mat, 1, sht, Name);
+			compassItem = make(mat, 1, sht, name);
 		}
 	}
 
 	public void createInventory() {
-
-		compass = Bukkit.createInventory(null, slotsSize,
-				config.getString("Inventory.Name").replaceAll("&", "§"));
+	    FileConfiguration config = getConfig();
+	    compassInventory = Bukkit.createInventory(null, config.getInt("Inventory.Slots"), colorize(config.getString("Inventory.Name")));
 
 		for (String i : config.getConfigurationSection("Items").getKeys(false)) {
 			List<String> Lore = new ArrayList<>();
 			boolean hasLore = false;
 
 			int slot = config.getInt("Items." + i + ".Slot");
-			Material mat = Material.matchMaterial(config.getString(
-					"Items." + i + ".Material").toUpperCase());
+			Material mat = Material.matchMaterial(config.getString("Items." + i + ".Material").toUpperCase());
 
-			int Amount = config.getInt("Items." + i + ".Amount");
+			int amount = config.getInt("Items." + i + ".Amount");
 
-			short sht = Short
-					.valueOf(config.getString("Items." + i + ".Short"));
+			short sht = (short) config.getInt("Items." + i + ".Short");
 
-			String Name = config.getString("Items." + i + ".Name").replaceAll(
-					"&", "§");
+			String name = colorize(config.getString("Items." + i + ".Name"));
 
 			if (config.getString("Items." + i + ".Lore") != null) {
 				hasLore = true;
 
 				for (String s : config.getStringList("Items." + i + ".Lore")) {
-					Lore.add(s.replaceAll("&", "§"));
+					Lore.add(colorize(s));
 				}
 			}
 
 			String command = config.getString("Items." + i + ".Command");
 
 			if (hasLore) {
-				compass.setItem(slot,
-						new ItemStack(make(mat, Amount, sht, Name, Lore)));
+			    compassInventory.setItem(slot, new ItemStack(make(mat, amount, sht, name, Lore)));
 			} else {
-				compass.setItem(slot, new ItemStack(
-						make(mat, Amount, sht, Name)));
+			    compassInventory.setItem(slot, new ItemStack(make(mat, amount, sht, name)));
 			}
 
-			String striped = ChatColor.stripColor(Name);
+			String striped = ChatColor.stripColor(name);
 			commands.put(striped, command);
 
 			if (config.getString("Items." + i + ".LilyPad") != null) {
@@ -167,10 +176,7 @@ public class LilyPadCompass extends JavaPlugin implements Listener {
 			}
 
 			if (config.getString("Items." + i + ".Message") != null) {
-				message.put(
-						striped,
-						config.getString("Items." + i + ".Message").replaceAll(
-								"&", "§"));
+				message.put(striped, config.getString("Items." + i + ".Message").replaceAll("&", "§"));
 			}
 		}
 	}

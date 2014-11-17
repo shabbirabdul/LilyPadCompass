@@ -1,19 +1,13 @@
-package cc.playmc.lilypadcompass.commands;
+package cc.playmc.lilypadcompass;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import cc.playmc.lilypadcompass.LilyPadCompass;
+public class LilyPadCompassCommand implements CommandExecutor {
 
-public class Compass implements CommandExecutor {
-
-	private LilyPadCompass plugin;
-
-	public Compass(LilyPadCompass plugin) {
-		this.plugin = plugin;
-	}
+    private LilyPadCompass plugin = LilyPadCompass.getInstance();
 
 	public boolean onCommand(CommandSender sender, Command cmd, String label,
 			String[] a) {
@@ -24,10 +18,9 @@ public class Compass implements CommandExecutor {
 		}
 
 		if (sender instanceof Player) {
-			Player p = (Player) sender;
 			plugin.createCompassItem();
 			plugin.createInventory();
-			p.getInventory().addItem(plugin.compassItem);
+			((Player)sender).getInventory().addItem(plugin.getCompassItem());
 			return true;
 		}
 		return false;

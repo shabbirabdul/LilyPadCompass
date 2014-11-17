@@ -9,17 +9,19 @@ import cc.playmc.lilypadcompass.LilyPadCompass;
 
 public class PlayerJoin implements Listener {
 
-	private LilyPadCompass plugin;
+    private LilyPadCompass plugin = LilyPadCompass.getInstance();
 
-	public PlayerJoin(LilyPadCompass plugin) {
-		this.plugin = plugin;
-	}
-
+    private int compassSlot;
+    
+    public PlayerJoin() {
+        this.compassSlot = plugin.getConfig().getInt("Compass.JoinSlot");
+    }
+    
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
 		Player p = e.getPlayer();
-		if (!p.getInventory().contains(plugin.compassItem)) {
-			p.getInventory().setItem(plugin.compassSlot, plugin.compassItem);
+		if (!p.getInventory().contains(plugin.getCompassItem())) {
+			p.getInventory().setItem(compassSlot, plugin.getCompassItem());
 		}
 	}
 }

@@ -1,4 +1,4 @@
-package cc.playmc.lilypadcompass.utils;
+package cc.playmc.lilypadcompass;
 
 import lilypad.client.connect.api.Connect;
 import lilypad.client.connect.api.request.RequestException;
@@ -7,13 +7,12 @@ import lilypad.client.connect.api.request.impl.RedirectRequest;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-public class LilyPad {
+public class LilyPadHook {
 
 	private Connect connect;
 
 	public void registerConnect() {
-		connect = ((Connect) Bukkit.getServicesManager()
-				.getRegistration(Connect.class).getProvider());
+		connect = ((Connect) Bukkit.getServicesManager().getRegistration(Connect.class).getProvider());
 	}
 
 	public Connect getConnect() {
@@ -24,7 +23,7 @@ public class LilyPad {
 		try {
 			connect.request(new RedirectRequest(server, p.getName()));
 		} catch (RequestException e) {
-			// IGNORE
+			// Ignore
 		}
 	}
 }
