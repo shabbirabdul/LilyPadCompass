@@ -5,7 +5,7 @@ LilyPadCompass allows you to configure a compass where you can click items to ac
 
 [![Is this the real life?](http://i.imgur.com/JbIfSBe.png)](https://github.com/sgtcaze/LilyPadCompass/releases)
 
-
+TEest 123
 
 LilyPad: http://www.lilypadmc.org/resources/lilypadcompass.6/
 
