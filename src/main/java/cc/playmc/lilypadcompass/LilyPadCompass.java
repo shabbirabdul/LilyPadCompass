@@ -25,7 +25,7 @@ public class LilyPadCompass extends JavaPlugin implements Listener {
     private static LilyPadCompass plugin;
     
     private LilyPadHook lilyPad;
-    
+    	private int number;
 	private ItemStack compassItem;
 
 	private Inventory compassInventory;
