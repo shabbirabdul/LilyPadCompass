@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 public class LilyPadHook {
 
 	private Connect connect;
-
+	private Connect connect1;
 	public void registerConnect() {
 		connect = ((Connect) Bukkit.getServicesManager().getRegistration(Connect.class).getProvider());
 	}
