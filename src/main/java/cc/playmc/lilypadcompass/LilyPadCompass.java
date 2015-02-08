@@ -23,7 +23,6 @@ import cc.playmc.lilypadcompass.events.PlayerJoin;
 public class LilyPadCompass extends JavaPlugin implements Listener {
 
     private static LilyPadCompass plugin;
-    private int string2;
     private LilyPadHook lilyPad;
     	private int number;
 	private ItemStack compassItem;
