@@ -45,6 +45,11 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.7.5-SNAPSHOT</version>
+			</plugin>
 		</plugins>
 	</build>
 	<dependencies>
