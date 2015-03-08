@@ -1,17 +1,14 @@
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 
-import cc.playmc.lilypadcompass.LilyPadCompass;
-import cc.playmc.lilypadcompass.LilyPadCompassCommand;
+import cc.playmc.lilypadcompass.Calculator;
 
 
 public class TestLilyPad {
 
 	@Test
 	public void test() {
-		LilyPadCompassCommand lilyPadCompassCommand = new LilyPadCompassCommand();
-		lilyPadCompassCommand.
+		Calculator calculator = new Calculator();
+		calculator.add(3, 4);
 	}
 
 }
