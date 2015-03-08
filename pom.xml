@@ -8,8 +8,14 @@
 	<packaging>jar</packaging>
 	<name>LilyPadCompass</name>
 	<url>http://maven.apache.org</url>
+
 	<properties>
+		<!-- Sonar -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+		<sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
+		<sonar.language>java</sonar.language>
 	</properties>
 	<build>
 		<defaultGoal>clean install</defaultGoal>
@@ -48,7 +54,19 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.7.5-SNAPSHOT</version>
+				<version>0.6.0.201210061924</version>
+				<configuration>
+					<destFile>${sonar.jacoco.reportPath}</destFile>
+					<append>true</append>
+				</configuration>
+				<executions>
+					<execution>
+						<id>agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
