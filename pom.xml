@@ -45,7 +45,7 @@
      <configuration>
       <mainClass>cc.playmc.lilypadcompass.JCC</mainClass>
       <arguments>
-       <argument>/home/shabbir/.jenkins/jobs/Sonar and Firebugs/workspace/src/main/java/cc/playmc/lilypadcompass/JCC.java</argument>
+       <argument></argument>
       </arguments>
      </configuration>
     </execution>
