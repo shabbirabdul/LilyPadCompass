@@ -32,25 +32,7 @@
 			</resource>
 		</resources>
 		<plugins>
-		<plugin>
-   <groupId>org.codehaus.mojo</groupId>
-   <artifactId>exec-maven-plugin</artifactId>
-   <version>1.1.1</version>
-   <executions>
-    <execution>
-     <phase>test</phase>
-     <goals>
-      <goal>java</goal>
-     </goals>
-     <configuration>
-      <mainClass>cc.playmc.lilypadcompass.JCC</mainClass>
-      <arguments>
-       <argument></argument>
-      </arguments>
-     </configuration>
-    </execution>
-   </executions>
-  </plugin>
+	
 		
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
