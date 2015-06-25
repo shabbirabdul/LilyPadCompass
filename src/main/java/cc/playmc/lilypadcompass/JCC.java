@@ -10,6 +10,7 @@ public class JCC
 {
   public static void main (String [] args) throws FileNotFoundException, IOException
   {
+    int z;
     BufferedReader in = null;
 
     // A switch used to turn on and off debugging.
